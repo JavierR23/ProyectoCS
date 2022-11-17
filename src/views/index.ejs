@@ -16,52 +16,55 @@
         <div class="col-md-5">
            <div class="card">
                <div class="card-body">
-                   <form action="/add" method="POST">
-                    <div class="form-group">
-                        <input type="text" name="nombrecompleto" placeholder="Nombre Completo" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <input type="number" name="matricula" placeholder="Matricula" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" name="carrera" placeholder="Carrera" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <input type="number" name="semestre" placeholder="Semestre" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <input type="date" name="fecha" placeholder="Fecha" class="form-control">
-                    </div>
-                    <button class="btn btn-primary">Registrar</button>
-                </form>
+                    <form action="/add" method="post">
+                        <div class="form-group">
+                            <input  type="number" name="matricula" placeholder="Matricula" class="form-control" >
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="nombrecompleto" placeholder="Nombre Completo" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="carrera" placeholder="Carrera" class="form-control" >
+                        </div>
+                        <div class="form-group">
+                            <input type="number" name="semestre" placeholder="Semestre" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="date" name="fecha" placeholder="Fecha" class="form-control">
+                        </div>
+                        <button class="btn btn-primary">Registrar</button>
+                        <a href="/up/<%=valores.id%>" class="btn btn-primary" id="habilitar" aria-disabled="true">Guardar Cambios</a>
+                    </form>
                </div>
            </div>
         </div>
         <div class="col-md-5">
-            <table class="table table-bordered table-hover">
+            <table class="table table-bordered table-hover background-color:cadetblue">
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>Nombre Completo</th>
                         <th>Matricula</th>
+                        <th>Nombre Completo</th>
                         <th>Carrera</th>
                         <th>Semestre</th>
                         <th>Fecha</th>
+                        <th>Opciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <% for(var i = 0; i < valores.length; i++){  %>
                         <tr>
-                            <td><%= i+1  %></td>
-                            <td><%= valores[i].nombrecompleto  %></td>
                             <td><%= valores[i].matricula  %></td>
+                            <td><%= valores[i].nombrecompleto  %></td>
                             <td><%= valores[i].carrera  %></td>
                             <td><%= valores[i].semestre  %></td>
                             <td><%= valores[i].fecha  %></td>
+                            <td>
+                                    <a href="/del/<%=valores[i].id%>" class="btn btn-danger">Borrar</a>
+                                    <a href="/mostrar/<%=valores[i].id%>" class="btn btn-primary">Editar</a>
+                            </td>
                         </tr>
                     <% } %>
                 </tbody>
-
             </table>
         </div>
     </div>
