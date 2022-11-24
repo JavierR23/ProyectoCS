@@ -1,15 +1,46 @@
 const express = require('express');
 const router = express.Router();
 const model = require('../model/registro')();
+const model2 = require('../model/cuentas')();
 
 const Registra = require('../model/registro');
+const Cuentas = require('../model/cuentas');
 
 router.get('/', async (req, res) => {
-    const valores = await Registra.find();
+    const valores = await Cuentas.find();
     console.log(valores);
-    res.render('index.ejs', {
+    res.render('login.ejs', {
         valores
     });
+});
+
+router.get('/index', async (req, res) => {
+    const valores = await Cuentas.find();
+    console.log(valores);
+    const {correo} = req.params;
+    const {pass} = req.params;
+    await Cuentas.validate(correo, pass);
+    if (correo == correo && pass == pass){
+        const valores = await Registra.find();
+        console.log(valores);
+        res.render('index.ejs', {
+            valores
+        });
+    }
+});
+
+router.get('/signup', async (req, res) => {
+    const valores = await Cuentas.find();
+    console.log(valores);
+    res.render('crearcuenta.ejs', {
+        valores
+    });
+});
+
+router.post('/add2', async (req, res) => {
+    const valor = new Cuentas(req.body);
+    await valor.save();
+    res.redirect('/');
 });
 
 router.get('/ver', async (req, res) =>{
@@ -21,13 +52,13 @@ router.get('/ver', async (req, res) =>{
 router.post('/add', async (req, res) => {
     const valor = new Registra(req.body);
     await valor.save();
-    res.redirect('/');
+    res.redirect('/index');
 });
 
 router.get('/del/:id', async(req, res) =>{
     const {id} = req.params;
     await Registra.findByIdAndRemove(id);
-    res.redirect('/');
+    res.redirect('/index');
 });
 
 router.get('/mostrar/:id', async(req, res) =>{
@@ -48,7 +79,7 @@ router.get('/mostrar/:id', async(req, res) =>{
 router.post('/up/:id', async(req, res) =>{
     const {id} = req.params;
     await Registra.findByIdAndUpdate(id, req.body);
-    res.redirect('/');
+    res.redirect('/index');
     
 });
 
