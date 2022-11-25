@@ -15,18 +15,34 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/index', async (req, res) => {
-    const valores = await Cuentas.find();
-    console.log(valores);
-    const {correo} = req.params;
-    const {pass} = req.params;
-    await Cuentas.validate(correo, pass);
-    if (correo == correo && pass == pass){
         const valores = await Registra.find();
         console.log(valores);
         res.render('index.ejs', {
             valores
         });
-    }
+    });
+
+router.post('/validar', async(req, res) =>{
+    const{username, password} = req.body;
+
+    Cuentas.findOne({username}, (err, user) =>{
+        if(err){
+            res.status(500).send('ERROR AL AUTENTICAR AL USUARIO');
+        }else if(!user){
+            res.status(500).send('EL USUARIO NO EXISTE');
+        }else{
+            user.isCorrectPassword(password, (err, result) => {
+                if(err){
+                    res.status(500).send('ERROR AL AUTENTICAR');
+                }else if(result){
+                    res.redirect('/index');
+                }else{
+                    res.status(500).send('USUARIO O CONTRASEÑA INCORRECTA');
+                    console.log(user);
+                }
+            });
+        }
+    });
 });
 
 router.get('/signup', async (req, res) => {
@@ -70,10 +86,6 @@ router.get('/mostrar/:id', async(req, res) =>{
     } catch (error){
         console.log(error.message);
     }
-    /*const {id} = req.params;
-    await Registra.findById(id);
-    console.log(Registra);
-    res.redirect('/');*/
 });
 
 router.post('/up/:id', async(req, res) =>{
